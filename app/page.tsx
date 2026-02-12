@@ -257,7 +257,10 @@ export default function Home() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="stat-label mb-1.5 block">Inning</label>
+                  <label className="stat-label mb-1.5 block">
+                    Inning
+                    <span className="ml-2 font-normal text-[var(--text-secondary)]">(valid: 1-15)</span>
+                  </label>
                   <input
                     type="number"
                     min="1"
