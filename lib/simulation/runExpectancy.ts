@@ -52,7 +52,6 @@ export interface GameState {
  * Get run expectancy for a given game state
  */
 export function getRunExpectancy(outs: OutState, bases: BaseState): number {
-  if (outs === 3) return 0
   return RUN_EXPECTANCY_MATRIX[outs][bases]
 }
 
