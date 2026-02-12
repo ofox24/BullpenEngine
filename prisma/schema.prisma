@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Pitcher {
+  id        String   @id @default(cuid())
+  name      String
+  team      String
+  throws    String
+  era       Float
+  fip       Float
+  k9        Float
+  bb9       Float
+  hr9       Float
+  createdAt DateTime @default(now())
+
+  scenarios ScenarioPitcher[]
+  results   SimulationResult[]
+
+  @@index([era])
+  @@index([name])
+}
+
+model Scenario {
+  id        String   @id @default(cuid())
+  inning    Int
+  outs      Int
+  scoreHome Int
+  scoreAway Int
+  isHome    Boolean
+  runnersOn String
+  createdAt DateTime @default(now())
+
+  pitchers ScenarioPitcher[]
+  results  SimulationResult[]
+}
+
+model ScenarioPitcher {
+  id         String   @id @default(cuid())
+  scenarioId String
+  pitcherId  String
+  scenario   Scenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+  pitcher    Pitcher  @relation(fields: [pitcherId], references: [id])
+
+  @@unique([scenarioId, pitcherId])
+}
+
+model SimulationResult {
+  id                String   @id @default(cuid())
+  scenarioId        String
+  pitcherId         String
+  pitcherName       String
+  avgWinProbability Float
+  wpDelta           Float
+  avgRunsAllowed    Float
+  optimalChoice     Boolean
+  iterations        Int
+  createdAt         DateTime @default(now())
+
+  scenario Scenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+  pitcher  Pitcher  @relation(fields: [pitcherId], references: [id])
+
+  @@index([scenarioId])
+  @@index([pitcherId])
+}
