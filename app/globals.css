@@ -2,21 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Dark theme (default and only mode) ── */
 :root {
-  --bg-primary: #020617;      /* slate-950 */
-  --bg-card: rgba(15, 23, 42, 0.8); /* slate-900/80 */
-  --border-subtle: rgba(148, 163, 184, 0.12);
-  --text-primary: #f1f5f9;    /* slate-100 */
-  --text-secondary: #94a3b8;  /* slate-400 */
+  --bg-primary: #030e11;
+  --bg-secondary: #062228;
+  --bg-card: rgba(7, 24, 29, 0.78);
+  --border-subtle: rgba(148, 163, 184, 0.18);
+  --text-primary: #e9f5f3;
+  --text-secondary: #c4d8d5;
+  --bg-gradient:
+    radial-gradient(circle at 0% 0%, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0) 34%),
+    radial-gradient(circle at 100% 0%, rgba(245, 158, 11, 0.17) 0%, rgba(245, 158, 11, 0) 30%),
+    linear-gradient(180deg, #031115 0%, #041a21 58%, #031015 100%);
+  --shadow-elevated: 0 22px 54px -26px rgba(0, 0, 0, 0.85);
   --accent-green: #22c55e;
   --accent-gold: #f59e0b;
+  --form-bg: rgba(6, 28, 35, 0.64);
+  --option-bg: #07222a;
+  --tooltip-bg: #07222a;
+  --tooltip-border: rgba(148, 163, 184, 0.15);
+  --tooltip-text: #e9f5f3;
+  --shimmer-from: rgba(148, 163, 184, 0.06);
+  --shimmer-mid: rgba(148, 163, 184, 0.12);
+  color-scheme: dark;
 }
 
-/* Dark-theme form resets */
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  color: var(--text-primary);
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+}
+
+/* Form resets — adapt via variables */
 input[type="number"],
 select {
-  color-scheme: dark;
-  background-color: rgba(15, 23, 42, 0.6);
+  background-color: var(--form-bg);
   color: var(--text-primary);
   border: 1px solid var(--border-subtle);
   border-radius: 0.5rem;
@@ -33,8 +58,7 @@ select:focus {
 
 input[type="text"],
 input[type="search"] {
-  color-scheme: dark;
-  background-color: rgba(15, 23, 42, 0.6);
+  background-color: var(--form-bg);
   color: var(--text-primary);
   border: 1px solid var(--border-subtle);
   border-radius: 0.5rem;
@@ -66,7 +90,7 @@ input[type="number"] {
 }
 
 select option {
-  background-color: #0f172a;
+  background-color: var(--option-bg);
   color: var(--text-primary);
 }
 
@@ -77,6 +101,7 @@ select option {
     border-radius: 0.75rem;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-elevated);
   }
 
   .stat-label {
@@ -97,9 +122,9 @@ select option {
   .shimmer-skeleton {
     background: linear-gradient(
       90deg,
-      rgba(148, 163, 184, 0.06) 25%,
-      rgba(148, 163, 184, 0.12) 50%,
-      rgba(148, 163, 184, 0.06) 75%
+      var(--shimmer-from) 25%,
+      var(--shimmer-mid) 50%,
+      var(--shimmer-from) 75%
     );
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite linear;

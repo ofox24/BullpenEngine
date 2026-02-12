@@ -134,7 +134,7 @@ export default function ResultsPage() {
   if (!scenario) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-slate-400 text-xl">Scenario not found</div>
+        <div className="text-[var(--text-secondary)] text-xl">Scenario not found</div>
       </div>
     )
   }
@@ -170,7 +170,7 @@ export default function ResultsPage() {
         {/* Back button */}
         <button
           onClick={() => router.push('/')}
-          className="group mb-6 flex items-center gap-2 text-slate-400 hover:text-slate-100 transition-colors"
+          className="group mb-6 flex items-center gap-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
         >
           <svg
             className="w-4 h-4 transition-transform group-hover:-translate-x-1"
@@ -184,7 +184,7 @@ export default function ResultsPage() {
           Back to Simulator
         </button>
 
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-50 mb-6">
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)] mb-6">
           Simulation Results
         </h1>
 
@@ -200,11 +200,11 @@ export default function ResultsPage() {
             <MiniDiamond runners={runners} />
 
             {/* Scoreboard mini */}
-            <div className="rounded-lg overflow-hidden border border-slate-700/50 text-sm">
+            <div className="rounded-lg overflow-hidden border border-[var(--border-subtle)] text-sm">
               <table className="text-center">
                 <tbody>
-                  <tr className="border-b border-slate-700/40">
-                    <td className="py-1.5 px-3 text-left text-slate-400 font-medium">AWAY</td>
+                  <tr className="border-b border-[var(--border-subtle)]">
+                    <td className="py-1.5 px-3 text-left text-[var(--text-secondary)] font-medium">AWAY</td>
                     <td className="py-1.5 px-4 font-bold text-lg">{scenario.scoreAway}</td>
                     <td className="py-1.5 px-2">
                       {!scenario.isHome && (
@@ -215,7 +215,7 @@ export default function ResultsPage() {
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-1.5 px-3 text-left text-slate-400 font-medium">HOME</td>
+                    <td className="py-1.5 px-3 text-left text-[var(--text-secondary)] font-medium">HOME</td>
                     <td className="py-1.5 px-4 font-bold text-lg">{scenario.scoreHome}</td>
                     <td className="py-1.5 px-2">
                       {scenario.isHome && (
@@ -243,7 +243,7 @@ export default function ResultsPage() {
                   <span
                     key={o}
                     className={`w-4 h-4 rounded-full ${
-                      o < scenario.outs ? 'bg-gold-500' : 'bg-slate-700'
+                      o < scenario.outs ? 'bg-gold-500' : 'bg-[var(--form-bg)] border border-[var(--border-subtle)]'
                     }`}
                   />
                 ))}
@@ -253,7 +253,7 @@ export default function ResultsPage() {
             {/* Runners text */}
             <div>
               <div className="stat-label">Runners</div>
-              <div className="text-sm font-semibold text-slate-200 mt-0.5">
+              <div className="text-sm font-semibold text-[var(--text-primary)] mt-0.5">
                 {runners.length === 0
                   ? 'Bases empty'
                   : runners.map((r) => r.charAt(0).toUpperCase() + r.slice(1)).join(', ')}
@@ -280,7 +280,7 @@ export default function ResultsPage() {
               >
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <h3 className="text-lg font-bold text-slate-100">{result.pitcherName}</h3>
+                    <h3 className="text-lg font-bold text-[var(--text-primary)]">{result.pitcherName}</h3>
                     {result.optimalChoice && (
                       <div className="text-xs text-field-400 font-semibold mt-0.5">
                         Optimal Choice
@@ -298,11 +298,11 @@ export default function ResultsPage() {
                 <div className="mb-4">
                   <div className="flex justify-between items-end mb-1">
                     <span className="stat-label">Win Probability</span>
-                    <span className="text-2xl font-bold text-slate-50">
+                    <span className="text-2xl font-bold text-[var(--text-primary)]">
                       {wpPct.toFixed(1)}%
                     </span>
                   </div>
-                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-[var(--form-bg)] rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-700 ${
                         result.optimalChoice ? 'bg-field-500' : 'bg-blue-500'
@@ -322,7 +322,7 @@ export default function ResultsPage() {
 
                 <div>
                   <span className="stat-label">Avg Runs Allowed</span>
-                  <div className="text-xl font-bold text-slate-100">
+                  <div className="text-xl font-bold text-[var(--text-primary)]">
                     {result.avgRunsAllowed.toFixed(2)}
                   </div>
                 </div>
@@ -339,28 +339,28 @@ export default function ResultsPage() {
           </div>
           <ResponsiveContainer width="100%" height={360}>
             <BarChart data={chartData} barCategoryGap="25%">
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.08)" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.14)" vertical={false} />
               <XAxis
                 dataKey="name"
-                stroke="#94a3b8"
+                stroke="#b7ceca"
                 tick={{ fontSize: 12 }}
-                axisLine={{ stroke: 'rgba(148,163,184,0.15)' }}
+                axisLine={{ stroke: 'rgba(148,163,184,0.25)' }}
                 tickLine={false}
               />
               <YAxis
-                stroke="#94a3b8"
+                stroke="#b7ceca"
                 tick={{ fontSize: 12 }}
                 axisLine={false}
                 tickLine={false}
                 tickFormatter={(v: number) => `${v}%`}
               />
               <Tooltip
-                cursor={{ fill: 'rgba(148,163,184,0.06)' }}
+                cursor={{ fill: 'rgba(148,163,184,0.1)' }}
                 contentStyle={{
-                  backgroundColor: '#0f172a',
-                  border: '1px solid rgba(148,163,184,0.15)',
+                  backgroundColor: '#07222a',
+                  border: '1px solid rgba(148,163,184,0.25)',
                   borderRadius: '8px',
-                  color: '#f1f5f9',
+                  color: '#e9f5f3',
                   fontSize: 13,
                 }}
                 formatter={(value: number) => [`${value}%`, 'Win Prob']}
