@@ -79,6 +79,7 @@ function SectionHeader({ title, accent = 'green' }: { title: string; accent?: 'g
 export default function Home() {
   const router = useRouter()
   const [pitchers, setPitchers] = useState<Pitcher[]>([])
+  const [pitchersError, setPitchersError] = useState('')
   const [loading, setLoading] = useState(false)
   const [search, setSearch] = useState('')
 
@@ -91,9 +92,27 @@ export default function Home() {
   const [selectedPitchers, setSelectedPitchers] = useState<string[]>([])
 
   useEffect(() => {
-    fetch('/api/pitchers')
-      .then((res) => res.json())
-      .then((data) => setPitchers(data.pitchers))
+    const loadPitchers = async () => {
+      try {
+        const res = await fetch('/api/pitchers')
+        const data = await res.json()
+
+        if (!res.ok) {
+          setPitchers([])
+          setPitchersError(data?.error || 'Unable to load pitchers')
+          return
+        }
+
+        setPitchers(Array.isArray(data?.pitchers) ? data.pitchers : [])
+        setPitchersError('')
+      } catch (error) {
+        console.error('Failed to load pitchers:', error)
+        setPitchers([])
+        setPitchersError('Unable to connect to the API')
+      }
+    }
+
+    loadPitchers()
   }, [])
 
   const filteredPitchers = useMemo(() => {
@@ -325,7 +344,14 @@ export default function Home() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="mb-4 w-full"
+              disabled={!!pitchersError}
             />
+
+            {pitchersError && (
+              <div className="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-300">
+                {pitchersError}. Check server logs and `DATABASE_URL` in Vercel environment variables.
+              </div>
+            )}
 
             <div className="max-h-[520px] space-y-2 overflow-y-auto pr-1">
               {filteredPitchers.map((pitcher) => {
@@ -371,7 +397,9 @@ export default function Home() {
                   </button>
                 )
               })}
-              {filteredPitchers.length === 0 && <p className="py-8 text-center text-sm text-[var(--text-secondary)]">No pitchers found</p>}
+              {filteredPitchers.length === 0 && !pitchersError && (
+                <p className="py-8 text-center text-sm text-[var(--text-secondary)]">No pitchers found</p>
+              )}
             </div>
             <p className="mt-3 text-xs text-[var(--text-secondary)]">
               Constraint: choose {MIN_PITCHERS}-{MAX_PITCHERS} pitchers.
@@ -381,7 +409,7 @@ export default function Home() {
 
         <button
           onClick={handleSimulate}
-          disabled={loading || selectedPitchers.length < MIN_PITCHERS}
+          disabled={loading || !!pitchersError || selectedPitchers.length < MIN_PITCHERS}
           className="mt-6 flex w-full items-center justify-center gap-3 rounded-xl bg-field-600 px-8 py-4 text-lg font-bold text-white transition-all hover:bg-field-500 disabled:cursor-not-allowed disabled:bg-[var(--form-bg)] disabled:text-[var(--text-secondary)]"
         >
           {loading ? (
